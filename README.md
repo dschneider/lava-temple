@@ -12,6 +12,11 @@ awesome **LOVE2D (LÖVE) Framework**.
 * Image-based Levels
 * Multiplatform Support (Mac OS X, Linux, Windows)
 
+## How to start the game?
+
+* Get the love2d binary from https://love2d.org/ and open the file in the bin
+  folder with it
+
 ## TODO
 
 * Architectural revamp (code-cleanup, better comments, including unit tests and stuff *bwahaha*)
