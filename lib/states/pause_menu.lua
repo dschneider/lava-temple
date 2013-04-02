@@ -18,9 +18,8 @@ function pause_menu:update(dt)
     Gamestate.switch(game)
   end
 
-  if gui.Button{text = "Fullscreen"} then
-    love.graphics.setMode(1680, 1050, false, true, 0)
-    love.graphics.toggleFullscreen()
+  if gui.Button{text = "Graphics"} then
+    Gamestate.switch(graphics_menu)
   end
 
   if gui.Button{text = "Main Menu"} then
