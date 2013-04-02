@@ -33,6 +33,7 @@ require("lib.entities.chest")
 Gamestate = require('lib.vendor.hump.gamestate')
 require("lib.states.game")
 require("lib.states.main_menu")
+require("lib.states.pause_menu")
 require("lib.states.game_server")
 
 --timer

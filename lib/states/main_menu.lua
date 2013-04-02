@@ -51,7 +51,7 @@ function main_menu:update(dt)
   gui.Input{info = host_input, size = {300}}
 
   gui.Label{text = "Your multiplayer name", size = {70}}
-  gui.Input{info = id_input, size = {300}}    
+  gui.Input{info = id_input, size = {300}}
 
   gui.group.pop{}
 end
