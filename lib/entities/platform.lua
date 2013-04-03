@@ -7,7 +7,7 @@ function Platform:new(world, x, y, platform_type, object)
   setmetatable(object, self)
   self.__index = self
 
-  object.x           = world:getResolutionOffset(x)
+  object.x           = x
   object.y           = y
   object.scaling     = 1.5
   object.image       = love.graphics.newImage("media/images/entities/platform_" .. platform_type .. ".png")

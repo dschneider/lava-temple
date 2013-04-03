@@ -1,6 +1,6 @@
 Player = {}
 
-function Player:new(x, y, name, color, origin, object)
+function Player:new(world, x, y, name, color, origin, object)
   if not love then print "This library requires Love2D"; return false; end
 
   object = object or {} -- create object if user does not provide one
@@ -10,7 +10,7 @@ function Player:new(x, y, name, color, origin, object)
   -- TODO: create in extra font class where all fonts are saved
   name_font = love.graphics.newFont("media/fonts/PressStart2P.ttf", 14)
 
-  object.name = name or "default"
+  object.name  = name or "default"
   object.color = color or "blue"
 
   -- origin is used to determine whether player is the local player

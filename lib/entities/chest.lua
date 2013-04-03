@@ -7,7 +7,7 @@ function Chest:new(world, x, y, object)
   setmetatable(object, self)
   self.__index = self -- self refers to Camera here
 
-  object.x           = world:getResolutionOffset(x)
+  object.x           = x
   object.y           = y
   object.scaling     = 2.0
   object.image       = love.graphics.newImage("media/images/entities/chest.png")

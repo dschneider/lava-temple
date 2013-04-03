@@ -45,10 +45,6 @@ function World:draw()
   lava:draw()
 end
 
-function World:getResolutionOffset(x)
-  return (x + self.resolution_offset)
-end
-
 function World:registerPlayer(player)
   table.insert(self.players, player)
 end
@@ -81,7 +77,7 @@ function World:build()
         chest.x = chest.x + 40
         table.insert(self.chests, chest)
       elseif red == 0 and green == 0 and blue == 0 and alpha == 255 then
-        player = Player:new(x_location_in_world, y_location_in_world, "default", "blue")
+        player = Player:new(self, x_location_in_world, y_location_in_world, "default", "blue")
         -- register player in world's player table (necessary for multiplayer)
         self:registerPlayer(player)
       end
