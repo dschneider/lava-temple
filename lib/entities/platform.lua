@@ -1,13 +1,13 @@
 Platform = {}
 
-function Platform:new(x, y, platform_type, object)
+function Platform:new(world, x, y, platform_type, object)
   if not love then print "This library requires Love2D"; return false; end
 
   object = object or {}
   setmetatable(object, self)
   self.__index = self
 
-  object.x           = x
+  object.x           = world:getResolutionOffset(x)
   object.y           = y
   object.scaling     = 1.5
   object.image       = love.graphics.newImage("media/images/entities/platform_" .. platform_type .. ".png")

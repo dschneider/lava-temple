@@ -11,6 +11,10 @@ function graphics_menu:enter(previous)
 
 end
 
+function graphics_menu:change_mode(x, y)
+  love.graphics.setMode(x, y, Settings.fullscreen, Settings.vsync, Settings.fsaa)
+end
+
 function graphics_menu:update(dt)
   gui.group.push{grow = "down", pos = {(love.graphics.getWidth() / 2) - 130, 200}}
 
@@ -18,38 +22,37 @@ function graphics_menu:update(dt)
     Gamestate.switch(pause_menu)
   end
 
-  if gui.Checkbox{checked = fullscreen, text = "Fullscreen"} then
-    fullscreen = not fullscreen
+  if gui.Checkbox{checked = Settings.fullscreen, text = "Fullscreen"} then
+    Settings.fullscreen = not Settings.fullscreen
     love.graphics.toggleFullscreen()
   end
 
-  if gui.Checkbox{checked = fullscreen, text = "Fullscreen"} then
-    shadows = not shadows
-    love.graphics.toggleFullscreen()
+  if gui.Checkbox{checked = Settings.shadows, text = "Shadows"} then
+    Settings.shadows = not Settings.shadows
   end
 
   if gui.Button{text = "1024 x 768"} then
-    love.graphics.setMode(1440, 900, fullscreen, true, 0)
+    self:change_mode(1024, 768)
   end
 
   if gui.Button{text = "1440 x 900"} then
-    love.graphics.setMode(1440, 900, fullscreen, true, 0)
+    self:change_mode(1440, 900)
   end
 
   if gui.Button{text = "1600 x 900"} then
-    love.graphics.setMode(1440, 900, fullscreen, true, 0)
+    self:change_mode(1600, 900)
   end
 
   if gui.Button{text = "1680 x 1050"} then
-    love.graphics.setMode(1680, 1050, fullscreen, true, 0)
+    self:change_mode(1680, 1050)
   end
 
   if gui.Button{text = "1600 x 1200"} then
-    love.graphics.setMode(1600, 1200, fullscreen, true, 0)
+    self:change_mode(1600, 1200)
   end
 
   if gui.Button{text = "1920 x 1080"} then
-    love.graphics.setMode(1600, 1200, fullscreen, true, 0)
+    self:change_mode(1920, 1080)
   end
 
   gui.group.pop{}

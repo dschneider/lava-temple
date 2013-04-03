@@ -46,7 +46,7 @@ require('version')
 function love.load()
   love.graphics.setIcon(love.graphics.newImage("media/images/icon.png"))
   love.graphics.setCaption("Lava Temple - " .. VERSION)
-  love.graphics.setMode(1024, 768, Settings.fullscreen, true, 0)
+  love.graphics.setMode(1024, 768, Settings.fullscreen, Settings.vsync, Settings.fsaa)
   Gamestate.switch(main_menu)
 end
 

@@ -7,11 +7,12 @@ function World:new(level_number, object)
   setmetatable(object, self)
   self.__index = self -- self refers to Camera here
 
-  object.structureImage = love.image.newImageData("levels/level_" .. level_number .. ".png")
-  object.rubies         = {}
-  object.chests         = {}
-  object.platforms      = {}
-  object.players        = {}
+  object.structureImage    = love.image.newImageData("levels/level_" .. level_number .. ".png")
+  object.rubies            = {}
+  object.chests            = {}
+  object.platforms         = {}
+  object.players           = {}
+  object.resolution_offset = (love.graphics.getWidth() / 2) - 500
   object:build()
 
   return object
@@ -30,12 +31,18 @@ function World:draw()
   self:drawPlatforms()
   self:drawChests()
   player:draw()
+
   if second_player then
     second_player:draw()
     player:drawName()
     second_player:drawName()
   end
+
   lava:draw()
+end
+
+function World:getResolutionOffset(x)
+  return (x + self.resolution_offset)
 end
 
 function World:registerPlayer(player)
@@ -53,19 +60,19 @@ function World:build()
       local y_location_in_world = (self.structureImage:getHeight() - y) * 50 * (-1)
 
       if red == 153 and green == 0 and blue == 0 and alpha == 255 then
-        table.insert(self.platforms, Platform:new(x_location_in_world, y_location_in_world, "one"))
+        table.insert(self.platforms, Platform:new(self, x_location_in_world, y_location_in_world, "one"))
       elseif red == 0 and green == 153 and blue == 0 and alpha == 255 then
-        table.insert(self.platforms, Platform:new(x_location_in_world, y_location_in_world, "two"))
+        table.insert(self.platforms, Platform:new(self, x_location_in_world, y_location_in_world, "two"))
       elseif red == 0 and green == 0 and blue == 153 and alpha == 255 then
-        table.insert(self.platforms, Platform:new(x_location_in_world, y_location_in_world, "three"))
+        table.insert(self.platforms, Platform:new(self, x_location_in_world, y_location_in_world, "three"))
       elseif red == 100 and green == 10 and blue == 0 and alpha == 255 then
-        local ruby = Ruby:new(x_location_in_world, y_location_in_world)
+        local ruby = Ruby:new(self, x_location_in_world, y_location_in_world)
         --every block has 50 * 50 pixels - that's why we need to get the ruby to the bottom
         ruby.y = ruby.y + 40 - ruby:getHeight()
         ruby.x = ruby.x + 40
         table.insert(self.rubies, ruby)
       elseif red == 100 and green == 50 and blue == 0 and alpha == 255 then
-        local chest = Chest:new(x_location_in_world, y_location_in_world)
+        local chest = Chest:new(self, x_location_in_world, y_location_in_world)
         chest.y = chest.y + 50 - chest:getHeight()
         chest.x = chest.x + 40
         table.insert(self.chests, chest)
