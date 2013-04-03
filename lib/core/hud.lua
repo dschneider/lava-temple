@@ -39,7 +39,7 @@ function Hud:drawRelativeMessages()
   self:drawDanger()
   self:drawServerMessages()
 
-  if draw_fps then
+  if Settings.draw_fps then
     self:drawFPS()
   end
 end

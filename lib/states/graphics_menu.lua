@@ -23,6 +23,11 @@ function graphics_menu:update(dt)
     love.graphics.toggleFullscreen()
   end
 
+  if gui.Checkbox{checked = fullscreen, text = "Fullscreen"} then
+    shadows = not shadows
+    love.graphics.toggleFullscreen()
+  end
+
   if gui.Button{text = "1024 x 768"} then
     love.graphics.setMode(1440, 900, fullscreen, true, 0)
   end

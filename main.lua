@@ -11,6 +11,7 @@ require("lib.core.client")
 require("lib.vendor.lumos")
 
 --core libraries needed for the game to run
+require("lib.core.settings")
 require("lib.core.camera")
 require("lib.core.hud")
 require("lib.core.world")
@@ -19,7 +20,7 @@ require("lib.core.sfx")
 require("lib.core.shader")
 require("lib.core.glow_shader")
 require("lib.core.liquid_shader")
-gui = require ("lib.vendor.quickie")
+gui = require("lib.vendor.quickie")
 
 --entities like players, enemies, the world...
 require("lib.entities.player")
@@ -45,11 +46,8 @@ require('version')
 function love.load()
   love.graphics.setIcon(love.graphics.newImage("media/images/icon.png"))
   love.graphics.setCaption("Lava Temple - " .. VERSION)
-  love.graphics.setMode(1024, 768, false, true, 0)
+  love.graphics.setMode(1024, 768, Settings.fullscreen, true, 0)
   Gamestate.switch(main_menu)
-  fullscreen = false
-  debug      = false
-  draw_fps   = false
 end
 
 function love.update(dt)

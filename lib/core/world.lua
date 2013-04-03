@@ -8,10 +8,10 @@ function World:new(level_number, object)
   self.__index = self -- self refers to Camera here
 
   object.structureImage = love.image.newImageData("levels/level_" .. level_number .. ".png")
-  object.rubies = {}
-  object.chests = {}
-  object.platforms = {}
-  object.players = {}
+  object.rubies         = {}
+  object.chests         = {}
+  object.platforms      = {}
+  object.players        = {}
   object:build()
 
   return object
@@ -30,7 +30,7 @@ function World:draw()
   self:drawPlatforms()
   self:drawChests()
   player:draw()
-  if second_player then 
+  if second_player then
     second_player:draw()
     player:drawName()
     second_player:drawName()
@@ -79,13 +79,13 @@ function World:build()
   end
 
   -- draw cave background
-  self.cave_quad = love.graphics.newQuad(1, 1, 4000, 10000, 296, 296)
+  self.cave_quad  = love.graphics.newQuad(1, 1, 4000, 10000, 296, 296)
   self.background = love.graphics.newImage("media/images/entities/cave.png")
   self.background:setWrap("repeat", "repeat")
 
   -- draw ground floor
   self.ground_quad = love.graphics.newQuad(1, 1, 4000, 1000, 160 * 5, 96 * 5)
-  self.ground = love.graphics.newImage("media/images/entities/ground.png")
+  self.ground      = love.graphics.newImage("media/images/entities/ground.png")
   self.ground:setWrap("repeat", "clamp")
 
   -- create the lava
@@ -115,7 +115,7 @@ end
 function World:castShadows()
   for key, platform in ipairs(self.platforms) do player.light:castShadow(platform) end
   for key, ruby in ipairs(self.rubies) do player.light:castShadow(ruby) end
-  for key, chest in ipairs(self.chests) do player.light:castShadow(chest) end  
+  for key, chest in ipairs(self.chests) do player.light:castShadow(chest) end
 end
 
 function World:removeRuby(key)
