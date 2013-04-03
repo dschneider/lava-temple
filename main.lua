@@ -1,3 +1,6 @@
+--save table to file
+require('lib.vendor.table.table')
+
 --animations library
 require("lib.vendor.anal.anal")
 
@@ -46,7 +49,7 @@ require('version')
 function love.load()
   love.graphics.setIcon(love.graphics.newImage("media/images/icon.png"))
   love.graphics.setCaption("Lava Temple - " .. VERSION)
-  love.graphics.setMode(1024, 768, Settings.fullscreen, Settings.vsync, Settings.fsaa)
+  love.graphics.setMode(Settings.x_res, Settings.y_res, Settings.fullscreen, Settings.vsync, Settings.fsaa)
   Gamestate.switch(main_menu)
 end
 

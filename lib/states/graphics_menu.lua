@@ -13,6 +13,9 @@ end
 
 function graphics_menu:change_mode(x, y)
   love.graphics.setMode(x, y, Settings.fullscreen, Settings.vsync, Settings.fsaa)
+  Settings.x_res = x
+  Settings.y_res = y
+  Settings.save()
 end
 
 function graphics_menu:update(dt)
@@ -25,10 +28,12 @@ function graphics_menu:update(dt)
   if gui.Checkbox{checked = Settings.fullscreen, text = "Fullscreen"} then
     Settings.fullscreen = not Settings.fullscreen
     love.graphics.toggleFullscreen()
+    Settings.save()
   end
 
   if gui.Checkbox{checked = Settings.shadows, text = "Shadows"} then
     Settings.shadows = not Settings.shadows
+    Settings.save()
   end
 
   if gui.Button{text = "1024 x 768"} then
