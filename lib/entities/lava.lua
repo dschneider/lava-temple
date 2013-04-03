@@ -7,25 +7,35 @@ function Lava:new(x, y, speed, object)
   setmetatable(object, self)
   self.__index = self -- self refers to Camera here
 
-  object.x = x
-  object.y = y
-  object.scaling = 6
-  object.speed = speed or 20
-  object.image_data = love.image.newImageData("media/images/entities/lava.png")
-  object.image = love.graphics.newImage("media/images/entities/lava.png")
-  object.glow_image = love.graphics.newImage("media/images/entities/lava.png")
-  object.width = object.image:getWidth() * object.scaling
-  object.height = object.image:getHeight() * object.scaling
-  object.top_edge = object:getY()
+
+  object.x           = x
+  object.y           = y
+  object.scaling     = 6
+  object.speed       = speed or 20
+  object.image_data  = love.image.newImageData("media/images/entities/lava.png")
+  object.image       = love.graphics.newImage("media/images/entities/lava.png")
+
+  width  = object.image:getWidth()
+  height = object.image:getHeight()
+  x_res  = love.graphics.getWidth()
+  y_res  = love.graphics.getHeight()
+
+  object.glow_image  = love.graphics.newImage("media/images/entities/lava.png")
+  object.width       = width * object.scaling
+  object.height      = height * object.scaling
+  object.lava_quad   = love.graphics.newQuad(object.x, object.y, x_res, y_res, width, height)
+  object.top_edge    = object:getY()
   object.bottom_edge = object:getY() + 10
   object.glow_shader = GlowShader:new()
+
+  object.image:setWrap("repeat", "repeat")
 
   return object
 end
 
 function Lava:draw()
   self.glow_shader:start()
-  love.graphics.draw(self.image, self.x, self.y, 0, self.scaling, self.scaling, 0, 0)
+  love.graphics.drawq(self.image, self.lava_quad, self.x, self.y, 0, self.scaling, self.scaling, 0, 0)
   love.graphics.setPixelEffect()
 end
 

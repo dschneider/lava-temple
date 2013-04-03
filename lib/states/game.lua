@@ -24,7 +24,7 @@ end
 
 function game:shakeScreen(dt)
   lava_player_distance = Vector:new(lava:getX(), lava:getY()):distance(Vector:new(player:getX(), player:getY()), "number")
-  shake_factor = 70 - (lava_player_distance  / 20)
+  shake_factor         = 70 - (lava_player_distance  / 20)
 
   if shake_factor <= 0 then
     shake_factor = 0

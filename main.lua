@@ -49,6 +49,7 @@ function love.load()
   Gamestate.switch(main_menu)
   fullscreen = false
   debug      = false
+  draw_fps   = false
 end
 
 function love.update(dt)
