@@ -26,7 +26,11 @@ end
 function World:draw()
   self:drawCaveBackground()
   self:drawGround()
-  self:castShadows()
+
+  if Settings.shadows then
+    self:castShadows()
+  end
+
   self:drawRubies()
   self:drawPlatforms()
   self:drawChests()
