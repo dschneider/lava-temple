@@ -29,6 +29,8 @@ local _M -- holds the module. needed to make widgetHit overridable
 local x,y = 0,0
 local down = false
 local hot, active = nil, nil
+local NO_WIDGET = {}
+local function _NOP_() end
 
 local function widgetHit(mouse, pos, size)
 	return mouse[1] >= pos[1] and mouse[1] <= pos[1] + size[1] and
@@ -39,6 +41,7 @@ local function setHot(id)    hot = id end
 local function setActive(id) active = id end
 local function isHot(id)     return id == hot end
 local function isActive(id)  return id == active end
+local function getHot()      return hot end
 
 local function updateWidget(id, pos, size, hit)
 	hit = hit or _M.widgetHit
@@ -69,9 +72,22 @@ local function endFrame()
 	end
 end
 
+local function disable()
+	_M.beginFrame   = _NOP_
+	_M.endFrame     = _NOP_
+	_M.updateWidget = _NOP_
+end
+
+local function enable()
+	_M.beginFrame   = beginFrame
+	_M.endFrame     = endFrame
+	_M.updateWidget = updateWidget
+end
+
 _M = {
 	widgetHit    = widgetHit,
 	setHot       = setHot,
+	getHot       = getHot,
 	setActive    = setActive,
 	isHot        = isHot,
 	isActive     = isActive,
@@ -80,6 +96,9 @@ _M = {
 
 	beginFrame   = beginFrame,
 	endFrame     = endFrame,
+
+	disable      = disable,
+	enable       = enable,
 }
 
 -- metatable provides getters to x, y and down

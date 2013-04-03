@@ -47,7 +47,8 @@ function love.load()
   love.graphics.setCaption("Lava Temple - " .. VERSION)
   love.graphics.setMode(1024, 768, false, true, 0)
   Gamestate.switch(main_menu)
-  debug = false
+  fullscreen = false
+  debug      = false
 end
 
 function love.update(dt)

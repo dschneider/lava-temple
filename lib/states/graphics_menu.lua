@@ -18,8 +18,10 @@ function graphics_menu:update(dt)
     Gamestate.switch(pause_menu)
   end
 
-  if gui.Button{text = "Fullscreen"} then
-    love.graphics.toggleFullscreen()
+  -- love.graphics.toggleFullscreen()
+
+  if gui.Checkbox{checked = fullscreen, text = "Fullscreen"} then
+    fullscreen = not fullscreen
   end
 
   if gui.Button{text = "1024 x 768"} then
