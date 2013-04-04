@@ -1,6 +1,6 @@
 Player = {}
 
-function Player:new(x, y, name, color, origin, object)
+function Player:new(world, x, y, name, color, origin, object)
   if not love then print "This library requires Love2D"; return false; end
 
   object = object or {} -- create object if user does not provide one
@@ -10,7 +10,7 @@ function Player:new(x, y, name, color, origin, object)
   -- TODO: create in extra font class where all fonts are saved
   name_font = love.graphics.newFont("media/fonts/PressStart2P.ttf", 14)
 
-  object.name = name or "default"
+  object.name  = name or "default"
   object.color = color or "blue"
 
   -- origin is used to determine whether player is the local player
@@ -45,8 +45,8 @@ function Player:new(x, y, name, color, origin, object)
   object.images = {}
   object.images.front = love.graphics.newImage("media/images/player_front.png")
   object.images.jump = love.graphics.newImage("media/images/player_stand_right.png")
-  object.images.stand_left = love.graphics.newImage("media/images/player_stand_left.png") 
-  object.images.stand_right = love.graphics.newImage("media/images/player_stand_right.png") 
+  object.images.stand_left = love.graphics.newImage("media/images/player_stand_left.png")
+  object.images.stand_right = love.graphics.newImage("media/images/player_stand_right.png")
   object.images.run_right_animation =  love.graphics.newImage("media/images/player_run_right_anim.png")
   object.images.run_left_animation =  love.graphics.newImage("media/images/player_run_left_anim.png")
 
@@ -78,11 +78,11 @@ function Player:draw()
   else
     love.graphics.draw(self.images[self.state], self.x, self.y + 3, 0, self.scaling, self.scaling, 0, 0)
   end
-  
-  if debug == true then 
+
+  if Settings.debug then
     love.graphics.rectangle( "line", self.x, self.y, self.width, self.height )
     love.graphics.rectangle( "line", self.x, self.top_edge, self.width, 0.1 )
-    love.graphics.rectangle( "line", self.x, self.bottom_edge, self.width, 0.1 )    
+    love.graphics.rectangle( "line", self.x, self.bottom_edge, self.width, 0.1 )
   end
 end
 
@@ -147,7 +147,7 @@ function Player:jump()
   self.jumping = true
   sfx:play("jump")
   effects.jump:setPosition(self:getCenter(), self:getBottomEdge())
-  effects.jump:start()  
+  effects.jump:start()
 end
 
 function Player:getLives()

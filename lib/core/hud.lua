@@ -28,7 +28,7 @@ function Hud:drawLives()
   for i = player.lives, 1, -1 do
     table.insert(lives, Life:new(10 + counter * 3, 25))
     counter = counter + 10
-  end 
+  end
 
   for key, life in ipairs(lives) do
     life:draw()
@@ -38,6 +38,15 @@ end
 function Hud:drawRelativeMessages()
   self:drawDanger()
   self:drawServerMessages()
+
+  if Settings.draw_fps then
+    self:drawFPS()
+  end
+end
+
+function Hud:drawFPS()
+  fps = love.timer.getFPS()
+  love.graphics.print(fps, camera.x + love.graphics.getWidth() - 130, camera.y + love.graphics.getHeight() - 100)
 end
 
 function Hud:drawDanger()

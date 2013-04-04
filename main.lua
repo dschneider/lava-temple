@@ -1,3 +1,6 @@
+--save table to file
+require('lib.vendor.table.table')
+
 --animations library
 require("lib.vendor.anal.anal")
 
@@ -11,6 +14,7 @@ require("lib.core.client")
 require("lib.vendor.lumos")
 
 --core libraries needed for the game to run
+require("lib.core.settings")
 require("lib.core.camera")
 require("lib.core.hud")
 require("lib.core.world")
@@ -19,7 +23,7 @@ require("lib.core.sfx")
 require("lib.core.shader")
 require("lib.core.glow_shader")
 require("lib.core.liquid_shader")
-gui = require ("lib.vendor.quickie")
+gui = require("lib.vendor.quickie")
 
 --entities like players, enemies, the world...
 require("lib.entities.player")
@@ -33,6 +37,8 @@ require("lib.entities.chest")
 Gamestate = require('lib.vendor.hump.gamestate')
 require("lib.states.game")
 require("lib.states.main_menu")
+require("lib.states.graphics_menu")
+require("lib.states.pause_menu")
 require("lib.states.game_server")
 
 --timer
@@ -43,9 +49,8 @@ require('version')
 function love.load()
   love.graphics.setIcon(love.graphics.newImage("media/images/icon.png"))
   love.graphics.setCaption("Lava Temple - " .. VERSION)
-  love.graphics.setMode(1024, 768, false, true, 0)
+  love.graphics.setMode(Settings.x_res, Settings.y_res, Settings.fullscreen, Settings.vsync, Settings.fsaa)
   Gamestate.switch(main_menu)
-  debug = false
 end
 
 function love.update(dt)

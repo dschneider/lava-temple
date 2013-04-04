@@ -92,8 +92,8 @@ function Base:getBottomEdge()
 end
 
 function Base:updateEdges()
-  self.top_edge = self:getY()
+  self.top_edge    = self:getY()
   self.bottom_edge = self:getY() + self:getHeight()
-  self.left_edge = self:getX()
-  self.right_edge = self:getX() + self:getWidth()
+  self.left_edge   = self:getX()
+  self.right_edge  = self:getX() + self:getWidth()
 end

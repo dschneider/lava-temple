@@ -46,14 +46,22 @@ function Camera:new(x, y, scale_x, scale_y, rotation, object)
   setmetatable(object, self)
   self.__index = self -- self refers to Camera here
 
-  object.x = x
-  object.y = y
-  object.scale_x = scale_x or 1
-  object.scale_y = scale_y or 1
+  object.x        = x
+  object.y        = y
+  object.scale_x  = scale_x or 1
+  object.scale_y  = scale_y or 1
   object.rotation = rotation or 0
-  object.layers = {}
+  object.layers   = {}
 
   return object
+end
+
+--Puts the camera into the center of the world, relative to the level size and
+--the current screen resolution.
+function Camera:centerInWorld(width)
+  x_res  = love.graphics.getWidth()
+  center = ((x_res - width) / 2) * (-1)
+  self:setPosition(center, nil)
 end
 
 function Camera:set()
@@ -111,7 +119,7 @@ end
 
 function Camera:drawLayers()
   local bx, by = self.x, self.y
-  
+
   for key, layer in ipairs(self.layers) do
     self.x = bx * layer.scale
     self.y = by * layer.scale

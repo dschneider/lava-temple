@@ -1,6 +1,6 @@
 effects = {}
 
-local image = love.graphics.newImage("media/images/effects/cloud.png")
+local image  = love.graphics.newImage("media/images/effects/cloud.png")
 effects.jump = love.graphics.newParticleSystem(image, 1000)
 effects.jump:setEmissionRate(50)
 effects.jump:setSizes(0.2, 0.2)
@@ -14,7 +14,10 @@ effects.jump:stop()
 
 -- create layer of smoke
 effects.smoke = {}
-for i = 1, 10 do table.insert(effects.smoke, love.graphics.newParticleSystem(image, 1000)) end
+number_of_smoke = love.graphics.getWidth() / 50
+for i = 1, number_of_smoke do
+  table.insert(effects.smoke, love.graphics.newParticleSystem(image, 1000))
+end
 
 for key, smoke_effect in ipairs(effects.smoke) do
   smoke_effect:setBufferSize(500)

@@ -8,10 +8,10 @@ function World:new(level_number, object)
   self.__index = self -- self refers to Camera here
 
   object.structureImage = love.image.newImageData("levels/level_" .. level_number .. ".png")
-  object.rubies = {}
-  object.chests = {}
-  object.platforms = {}
-  object.players = {}
+  object.rubies         = {}
+  object.chests         = {}
+  object.platforms      = {}
+  object.players        = {}
   object:build()
 
   return object
@@ -25,16 +25,20 @@ end
 function World:draw()
   self:drawCaveBackground()
   self:drawGround()
-  self:castShadows()
+
+  if Settings.shadows then self:castShadows() end
+
   self:drawRubies()
   self:drawPlatforms()
   self:drawChests()
   player:draw()
-  if second_player then 
+
+  if second_player then
     second_player:draw()
     player:drawName()
     second_player:drawName()
   end
+
   lava:draw()
 end
 
@@ -42,35 +46,38 @@ function World:registerPlayer(player)
   table.insert(self.players, player)
 end
 
+--a level is 900px wide
 function World:build()
+  local block_size = 50
+
   for x = 0, self.structureImage:getWidth() - 1 do
     for y = 0, self.structureImage:getHeight() - 1 do
       local red, green, blue, alpha = self.structureImage:getPixel(x, y)
 
       -- It's calculating x and y from the top right image corner
       -- We turn it around so that it builds the map from the bottom up
-      local x_location_in_world = x * 50
-      local y_location_in_world = (self.structureImage:getHeight() - y) * 50 * (-1)
+      local x_location_in_world = x * block_size
+      local y_location_in_world = (self.structureImage:getHeight() - y) * block_size * (-1)
 
       if red == 153 and green == 0 and blue == 0 and alpha == 255 then
-        table.insert(self.platforms, Platform:new(x_location_in_world, y_location_in_world, "one"))
+        table.insert(self.platforms, Platform:new(self, x_location_in_world, y_location_in_world, "one"))
       elseif red == 0 and green == 153 and blue == 0 and alpha == 255 then
-        table.insert(self.platforms, Platform:new(x_location_in_world, y_location_in_world, "two"))
+        table.insert(self.platforms, Platform:new(self, x_location_in_world, y_location_in_world, "two"))
       elseif red == 0 and green == 0 and blue == 153 and alpha == 255 then
-        table.insert(self.platforms, Platform:new(x_location_in_world, y_location_in_world, "three"))
+        table.insert(self.platforms, Platform:new(self, x_location_in_world, y_location_in_world, "three"))
       elseif red == 100 and green == 10 and blue == 0 and alpha == 255 then
-        local ruby = Ruby:new(x_location_in_world, y_location_in_world)
+        local ruby = Ruby:new(self, x_location_in_world, y_location_in_world)
         --every block has 50 * 50 pixels - that's why we need to get the ruby to the bottom
         ruby.y = ruby.y + 40 - ruby:getHeight()
         ruby.x = ruby.x + 40
         table.insert(self.rubies, ruby)
       elseif red == 100 and green == 50 and blue == 0 and alpha == 255 then
-        local chest = Chest:new(x_location_in_world, y_location_in_world)
+        local chest = Chest:new(self, x_location_in_world, y_location_in_world)
         chest.y = chest.y + 50 - chest:getHeight()
         chest.x = chest.x + 40
         table.insert(self.chests, chest)
       elseif red == 0 and green == 0 and blue == 0 and alpha == 255 then
-        player = Player:new(x_location_in_world, y_location_in_world, "default", "blue")
+        player = Player:new(self, x_location_in_world, y_location_in_world, "default", "blue")
         -- register player in world's player table (necessary for multiplayer)
         self:registerPlayer(player)
       end
@@ -79,25 +86,25 @@ function World:build()
   end
 
   -- draw cave background
-  self.cave_quad = love.graphics.newQuad(1, 1, 4000, 10000, 296, 296)
+  self.cave_quad  = love.graphics.newQuad(-400, 1, 4000, 10000, 296, 296)
   self.background = love.graphics.newImage("media/images/entities/cave.png")
   self.background:setWrap("repeat", "repeat")
 
   -- draw ground floor
-  self.ground_quad = love.graphics.newQuad(1, 1, 4000, 1000, 160 * 5, 96 * 5)
-  self.ground = love.graphics.newImage("media/images/entities/ground.png")
+  self.ground_quad = love.graphics.newQuad(-400, 1, 4000, 1000, 160 * 5, 96 * 5)
+  self.ground      = love.graphics.newImage("media/images/entities/ground.png")
   self.ground:setWrap("repeat", "clamp")
 
   -- create the lava
-  lava = Lava:new(0, 400)
+  lava = Lava:new(-400, 400)
 end
 
 function World:drawCaveBackground()
-  love.graphics.drawq(self.background, self.cave_quad, 0, -5000, 0, 1, 1, 1, 0)
+  love.graphics.drawq(self.background, self.cave_quad, -400, -5000, 0, 1, 1, 1, 0)
 end
 
 function World:drawGround()
-  love.graphics.drawq(self.ground, self.ground_quad, 0, 45, 0, 1, 1, 1, 0)
+  love.graphics.drawq(self.ground, self.ground_quad, -400, 45, 0, 1, 1, 1, 0)
 end
 
 function World:drawRubies()
@@ -115,7 +122,7 @@ end
 function World:castShadows()
   for key, platform in ipairs(self.platforms) do player.light:castShadow(platform) end
   for key, ruby in ipairs(self.rubies) do player.light:castShadow(ruby) end
-  for key, chest in ipairs(self.chests) do player.light:castShadow(chest) end  
+  for key, chest in ipairs(self.chests) do player.light:castShadow(chest) end
 end
 
 function World:removeRuby(key)

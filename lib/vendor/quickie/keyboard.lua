@@ -26,6 +26,7 @@ THE SOFTWARE.
 
 local key,code = nil, -1
 local focus, lastwidget
+local NO_WIDGET = {}
 
 local cycle = {
 	-- binding = {key = key, modifier1, modifier2, ...} XXX: modifiers are OR-ed!
@@ -33,11 +34,16 @@ local cycle = {
 	next = {key = 'tab'},
 }
 
-local function pressed(...)   key, code = ... end
-local function setFocus(id)   focus = id end
-local function disableFocus() focus = NO_WIDGET end
-local function clearFocus()   focus = nil end
-local function hasFocus(id)   return id == focus end
+local function pressed(...)
+	key, code = ...
+	assert(type(key) == 'string', 'Invalid argument `key`. Expected string, got ' .. type(key))
+	assert(type(code) == 'number', 'Invalid argument `code`. Expected number, got ' .. type(code))
+end
+local function setFocus(id) focus = id end
+local function disable()    focus = NO_WIDGET end
+local function clearFocus() focus = nil end
+local function hasFocus(id) return id == focus end
+local function getFocus()   return focus end
 
 local function tryGrab(id)
 	if not focus then
@@ -78,11 +84,13 @@ return setmetatable({
 	tryGrab       = tryGrab,
 	isBindingDown = isBindingDown,
 	setFocus      = setFocus,
-	disableFocus  = disableFocus,
-	enableFocus   = clearFocus,
+	getFocus      = getFocus,
 	clearFocus    = clearFocus,
 	hasFocus      = hasFocus,
 	makeCyclable  = makeCyclable,
+
+	disable       = disable,
+	enable        = clearFocus,
 
 	beginFrame   = beginFrame,
 	endFrame     = endFrame,

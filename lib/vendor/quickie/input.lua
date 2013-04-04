@@ -36,24 +36,21 @@ return function(w)
 	w.info.text = w.info.text or ""
 	w.info.cursor = math.min(w.info.cursor or w.info.text:len(), w.info.text:len())
 
-	local id = core.generateID()
+	local id = w.id or core.generateID()
 	local pos, size = group.getRect(w.pos, w.size)
 	mouse.updateWidget(id, pos, size, w.widgetHit)
 	keyboard.makeCyclable(id)
 	if mouse.isActive(id) then keyboard.setFocus(id) end
 
-	local changed = false
 	if not keyboard.hasFocus(id) then
 		--[[nothing]]
 	-- editing
 	elseif keyboard.key == 'backspace' then
 		w.info.text = w.info.text:sub(1,w.info.cursor-1) .. w.info.text:sub(w.info.cursor+1)
 		w.info.cursor = math.max(0, w.info.cursor-1)
-		changed = true
 	elseif keyboard.key == 'delete' then
 		w.info.text = w.info.text:sub(1,w.info.cursor) .. w.info.text:sub(w.info.cursor+2)
 		w.info.cursor = math.min(w.info.text:len(), w.info.cursor)
-		changed = true
 	-- movement
 	elseif keyboard.key == 'left' then
 		w.info.cursor = math.max(0, w.info.cursor-1)
@@ -64,16 +61,18 @@ return function(w)
 	elseif keyboard.key == 'end' then
 		w.info.cursor = w.info.text:len()
 	-- info
+	elseif keyboard.key == 'return' then
+		keyboard.clearFocus()
+		keyboard.pressed('', -1)
 	elseif keyboard.code >= 32 and keyboard.code < 127 then
 		local left = w.info.text:sub(1,w.info.cursor)
 		local right =  w.info.text:sub(w.info.cursor+1)
 		w.info.text = table.concat{left, string.char(keyboard.code), right}
 		w.info.cursor = w.info.cursor + 1
-		changed = true
 	end
 
 	core.registerDraw(id, w.draw or core.style.Input,
 		w.info.text, w.info.cursor, pos[1],pos[2], size[1],size[2])
 
-	return changed
+	return mouse.releasedOn(id) or (keyboard.key == 'return' and keyboard.hasFocus(id))
 end
