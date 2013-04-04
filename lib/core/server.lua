@@ -9,7 +9,7 @@ local function connected(client_id)
 end
 
 local function receive(data, client_id)
-  if debug then print("SERVER: " .. data) end
+  if Settings.debug then print("SERVER: " .. data) end
   if data:match("^new_player:client_id:") then
     server:registerPlayer(data, client_id)
     server:send(("player_joined:%s"):format(server:getPlayerName(client_id)))

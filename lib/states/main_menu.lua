@@ -11,7 +11,7 @@ function main_menu:init()
   gui.group.default.size[2] = 25
   gui.group.default.spacing = 5
 
-  self.lava = Lava:new(0, 0)
+  self.lava = Lava:new(-400, 0)
 end
 
 function main_menu:enter(previous)
@@ -51,7 +51,7 @@ function main_menu:update(dt)
   gui.Input{info = host_input, size = {300}}
 
   gui.Label{text = "Your multiplayer name", size = {70}}
-  gui.Input{info = id_input, size = {300}}    
+  gui.Input{info = id_input, size = {300}}
 
   gui.group.pop{}
 end

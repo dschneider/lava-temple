@@ -1,3 +1,4 @@
+#!/bin/bash
 # LÖVE Boilerplate - A template for the LÖVE framework (love2d)
 
 # Bundle file
@@ -39,4 +40,8 @@ rm bin/$current_dir.love
 zip -r bin/$current_dir.love *
 
 # Start the love app
-/Applications/love0.8.0.app/Contents/MacOS/love bin/$current_dir.love
+unamestr=`uname`
+if [ "$unamestr" == 'Linux' ];
+  then /usr/bin/love bin/$current_dir.love
+  else /Applications/love0.8.0.app/Contents/MacOS/love bin/$current_dir.love
+fi

@@ -24,7 +24,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ]]--
 
-local NO_WIDGET = function()end
 local BASE = (...):match("(.-)[^%.]+$")
 local group    = require(BASE .. 'group')
 local mouse    = require(BASE .. 'mouse')
@@ -54,19 +53,27 @@ local function save_pack(...)
 	return {n = select('#', ...), ...}
 end
 
-local function save_unpack(t, i)
-	i = i or 1
-	if i >= t.n then return t[i] end
-	return t[i], save_unpack(t, i+1)
+local function save_unpack_helper(t, i, ...)
+	if i <= 0 then return ... end
+	return save_unpack_helper(t, i-1, t[i], ...)
+end
+
+local function save_unpack(t)
+	return save_unpack_helper(t, t.n)
 end
 
 --
 -- Widget ID
 --
-local maxid = 0
+local maxid, uids = 0, {}
+setmetatable(uids, {__index = function(t, i)
+	t[i] = {}
+	return t[i]
+end})
+
 local function generateID()
 	maxid = maxid + 1
-	return maxid
+	return uids[maxid]
 end
 
 --
