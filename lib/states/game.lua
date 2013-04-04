@@ -6,6 +6,9 @@ function game:init()
   hud          = Hud:new()
   sfx          = Sfx:new()
   camera       = Camera:new(0, 0)
+  --A level is 900px wide. We put the camera into the center of the level,
+  --depending on the screen resolution.
+  camera:centerInWorld(900)
   paused       = false
   game_started = true
 
@@ -17,9 +20,7 @@ function game:init()
 end
 
 function game:enter(previous)
-  if previous == main_menu then
-    world = World:new("one")
-  end
+  if previous == main_menu then world = World:new("one") end
 end
 
 function game:shakeScreen(dt)
@@ -50,9 +51,7 @@ function game:update(dt)
 
     -- world holds all players, players are accessed via player and second_player
     -- global variables right now
-    for index, player in pairs(world.players) do
-      player:update(dt)
-    end
+    for index, player in pairs(world.players) do player:update(dt) end
 
     world:update(dt)
     player.light:update(dt)
@@ -66,7 +65,7 @@ function game:update(dt)
     end
 
     -- Move the camera with the player, but only on the y-axis
-    camera:setPosition(0, player:getY() - 500)
+    camera:setPosition(nil, player:getY() - 500)
 
     -- Game is over if all player lives are gone
     if player:getLives() <= 0 then self:gameover() end

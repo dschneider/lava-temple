@@ -7,12 +7,11 @@ function World:new(level_number, object)
   setmetatable(object, self)
   self.__index = self -- self refers to Camera here
 
-  object.structureImage    = love.image.newImageData("levels/level_" .. level_number .. ".png")
-  object.rubies            = {}
-  object.chests            = {}
-  object.platforms         = {}
-  object.players           = {}
-  object.resolution_offset = (love.graphics.getWidth() / 2) - 500
+  object.structureImage = love.image.newImageData("levels/level_" .. level_number .. ".png")
+  object.rubies         = {}
+  object.chests         = {}
+  object.platforms      = {}
+  object.players        = {}
   object:build()
 
   return object
@@ -27,9 +26,7 @@ function World:draw()
   self:drawCaveBackground()
   self:drawGround()
 
-  if Settings.shadows then
-    self:castShadows()
-  end
+  if Settings.shadows then self:castShadows() end
 
   self:drawRubies()
   self:drawPlatforms()
@@ -49,15 +46,18 @@ function World:registerPlayer(player)
   table.insert(self.players, player)
 end
 
+--a level is 900px wide
 function World:build()
+  local block_size = 50
+
   for x = 0, self.structureImage:getWidth() - 1 do
     for y = 0, self.structureImage:getHeight() - 1 do
       local red, green, blue, alpha = self.structureImage:getPixel(x, y)
 
       -- It's calculating x and y from the top right image corner
       -- We turn it around so that it builds the map from the bottom up
-      local x_location_in_world = x * 50
-      local y_location_in_world = (self.structureImage:getHeight() - y) * 50 * (-1)
+      local x_location_in_world = x * block_size
+      local y_location_in_world = (self.structureImage:getHeight() - y) * block_size * (-1)
 
       if red == 153 and green == 0 and blue == 0 and alpha == 255 then
         table.insert(self.platforms, Platform:new(self, x_location_in_world, y_location_in_world, "one"))
@@ -86,25 +86,25 @@ function World:build()
   end
 
   -- draw cave background
-  self.cave_quad  = love.graphics.newQuad(1, 1, 4000, 10000, 296, 296)
+  self.cave_quad  = love.graphics.newQuad(-400, 1, 4000, 10000, 296, 296)
   self.background = love.graphics.newImage("media/images/entities/cave.png")
   self.background:setWrap("repeat", "repeat")
 
   -- draw ground floor
-  self.ground_quad = love.graphics.newQuad(1, 1, 4000, 1000, 160 * 5, 96 * 5)
+  self.ground_quad = love.graphics.newQuad(-400, 1, 4000, 1000, 160 * 5, 96 * 5)
   self.ground      = love.graphics.newImage("media/images/entities/ground.png")
   self.ground:setWrap("repeat", "clamp")
 
   -- create the lava
-  lava = Lava:new(0, 400)
+  lava = Lava:new(-400, 400)
 end
 
 function World:drawCaveBackground()
-  love.graphics.drawq(self.background, self.cave_quad, 0, -5000, 0, 1, 1, 1, 0)
+  love.graphics.drawq(self.background, self.cave_quad, -400, -5000, 0, 1, 1, 1, 0)
 end
 
 function World:drawGround()
-  love.graphics.drawq(self.ground, self.ground_quad, 0, 45, 0, 1, 1, 1, 0)
+  love.graphics.drawq(self.ground, self.ground_quad, -400, 45, 0, 1, 1, 1, 0)
 end
 
 function World:drawRubies()

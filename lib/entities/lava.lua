@@ -7,7 +7,6 @@ function Lava:new(x, y, speed, object)
   setmetatable(object, self)
   self.__index = self -- self refers to Camera here
 
-
   object.x           = x
   object.y           = y
   object.scaling     = 6

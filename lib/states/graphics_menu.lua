@@ -15,6 +15,9 @@ function graphics_menu:change_mode(x, y)
   love.graphics.setMode(x, y, Settings.fullscreen, Settings.vsync, Settings.fsaa)
   Settings.x_res = x
   Settings.y_res = y
+  --A level is 900px wide. We put the camera into the center of the level,
+  --depending on the screen resolution.
+  camera:centerInWorld(900)
   Settings.save()
 end
 

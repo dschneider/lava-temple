@@ -11,7 +11,7 @@ function main_menu:init()
   gui.group.default.size[2] = 25
   gui.group.default.spacing = 5
 
-  self.lava = Lava:new(0, 0)
+  self.lava = Lava:new(-400, 0)
 end
 
 function main_menu:enter(previous)
