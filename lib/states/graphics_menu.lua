@@ -5,6 +5,8 @@ function graphics_menu:init()
   gui.group.default.size[1] = 150
   gui.group.default.size[2] = 25
   gui.group.default.spacing = 5
+
+  modes = love.graphics.getModes()
 end
 
 function graphics_menu:enter(previous)
@@ -39,28 +41,11 @@ function graphics_menu:update(dt)
     Settings.save()
   end
 
-  if gui.Button{text = "1024 x 768"} then
-    self:change_mode(1024, 768)
-  end
-
-  if gui.Button{text = "1440 x 900"} then
-    self:change_mode(1440, 900)
-  end
-
-  if gui.Button{text = "1600 x 900"} then
-    self:change_mode(1600, 900)
-  end
-
-  if gui.Button{text = "1680 x 1050"} then
-    self:change_mode(1680, 1050)
-  end
-
-  if gui.Button{text = "1600 x 1200"} then
-    self:change_mode(1600, 1200)
-  end
-
-  if gui.Button{text = "1920 x 1080"} then
-    self:change_mode(1920, 1080)
+  --Generate all the resolution buttons.
+  for index, mode in ipairs(modes) do
+    if gui.Button{text = mode.width .. "x" .. mode.height} then
+      self:change_mode(mode.width, mode.height)
+    end
   end
 
   gui.group.pop{}

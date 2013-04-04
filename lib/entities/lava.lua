@@ -19,7 +19,6 @@ function Lava:new(x, y, speed, object)
   x_res  = love.graphics.getWidth()
   y_res  = love.graphics.getHeight()
 
-  object.glow_image  = love.graphics.newImage("media/images/entities/lava.png")
   object.width       = width * object.scaling
   object.height      = height * object.scaling
   object.lava_quad   = love.graphics.newQuad(object.x, object.y, x_res, y_res, width, height)
