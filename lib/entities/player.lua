@@ -17,38 +17,31 @@ function Player:new(world, x, y, name, color, origin, object)
   -- or has joined through a multiplayer game
   object.origin = origin or "local"
 
-  object.x = x
-  object.y = y
-
-  object.x_velocity = 0
-  object.y_velocity = 0
-  object.state = "front"
-
-  object.jumping = false
-  object.scaling = 1.5
-
+  object.x             = x
+  object.y             = y
+  object.x_velocity    = 0
+  object.y_velocity    = 0
+  object.state         = "front"
+  object.jumping       = false
+  object.scaling       = 1.5
   object.jump_velocity = -600
-  object.run_speed = 500
-
-  object.lives = 5
-  object.rubies = 0
-
-  object.gravity = 1800
-
-  object.height = 32 * object.scaling
-  object.width = 27 * object.scaling
-
-  object.light = Light:new(object.x, object.y, 320, 255)
+  object.run_speed     = 500
+  object.lives         = 5
+  object.rubies        = 0
+  object.gravity       = 1800
+  object.height        = 32 * object.scaling
+  object.width         = 27 * object.scaling
+  object.light         = Light:new(object.x, object.y, 320, 255)
 
   object:updateEdges()
 
   object.images = {}
-  object.images.front = love.graphics.newImage("media/images/player_front.png")
-  object.images.jump = love.graphics.newImage("media/images/player_stand_right.png")
-  object.images.stand_left = love.graphics.newImage("media/images/player_stand_left.png")
-  object.images.stand_right = love.graphics.newImage("media/images/player_stand_right.png")
-  object.images.run_right_animation =  love.graphics.newImage("media/images/player_run_right_anim.png")
-  object.images.run_left_animation =  love.graphics.newImage("media/images/player_run_left_anim.png")
+  object.images.front               = love.graphics.newImage("media/images/player_front.png")
+  object.images.jump                = love.graphics.newImage("media/images/player_stand_right.png")
+  object.images.stand_left          = love.graphics.newImage("media/images/player_stand_left.png")
+  object.images.stand_right         = love.graphics.newImage("media/images/player_stand_right.png")
+  object.images.run_right_animation = love.graphics.newImage("media/images/player_run_right_anim.png")
+  object.images.run_left_animation  = love.graphics.newImage("media/images/player_run_left_anim.png")
 
   object.animations = {}
   object.animations.run_right = newAnimation(object.images.run_right_animation, 27, 32, 0.1, 0)
@@ -80,9 +73,9 @@ function Player:draw()
   end
 
   if Settings.debug then
-    love.graphics.rectangle( "line", self.x, self.y, self.width, self.height )
-    love.graphics.rectangle( "line", self.x, self.top_edge, self.width, 0.1 )
-    love.graphics.rectangle( "line", self.x, self.bottom_edge, self.width, 0.1 )
+    love.graphics.rectangle("line", self.x, self.y, self.width, self.height)
+    love.graphics.rectangle("line", self.x, self.top_edge, self.width, 0.1)
+    love.graphics.rectangle("line", self.x, self.bottom_edge, self.width, 0.1)
   end
 end
 
@@ -98,12 +91,16 @@ function Player:updateGravity(dt)
   self.x = self.x + (self.x_velocity * dt)
 
   -- apply gravity
-  self.y_velocity = self.y_velocity + (self.gravity * dt)
+  if not body2 then
+    self.y_velocity = self.y_velocity + (self.gravity * dt)
+  end
 
   -- stop the player when he hits the ground
-  if self.y >= 0 then
-    self.y = 0
-    self:resetVelocity()
+  if not body2 then
+    if self.y >= 0 then
+      self.y = 0
+      self:resetVelocity()
+    end
   end
 end
 

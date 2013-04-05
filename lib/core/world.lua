@@ -60,7 +60,11 @@ function World:build()
       local y_location_in_world = (self.structureImage:getHeight() - y) * block_size * (-1)
 
       if red == 153 and green == 0 and blue == 0 and alpha == 255 then
-        table.insert(self.platforms, Platform:new(self, x_location_in_world, y_location_in_world, "one"))
+        local p = Platform:new(self, x_location_in_world, y_location_in_world, "one")
+        local s = love.physics.newRectangleShape(p.width, p.height)
+        local b = love.physics.newBody(physics_world, x_location_in_world, y_location_in_world, "static")
+        love.physics.newFixture(b, s)
+        table.insert(self.platforms, p)
       elseif red == 0 and green == 153 and blue == 0 and alpha == 255 then
         table.insert(self.platforms, Platform:new(self, x_location_in_world, y_location_in_world, "two"))
       elseif red == 0 and green == 0 and blue == 153 and alpha == 255 then
@@ -136,6 +140,7 @@ function World:calculateCollisionsWithPlayer(player)
       if not (player.y == (platform:getY() - player:getHeight())) then
         player.y = platform:getY() - player:getHeight()
         player:resetVelocity()
+        body2 = nil
       end
     end
   end

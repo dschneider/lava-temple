@@ -131,10 +131,10 @@ function Light:drawFogOfWar()
   -- the fog of war needs to move with the player and should only
   -- be calculated on the visible area of the screen.
   -- the position of the fog is thus depending on the camera position
-  local tile_size = 100
-  local maximum_width = camera:getX() + love.graphics.getWidth()
+  local tile_size      = 50
+  local maximum_width  = camera:getX() + love.graphics.getWidth()
   local maximum_height = camera:getY() + love.graphics.getHeight()
-  local minimum_width = camera:getX() + 0
+  local minimum_width  = camera:getX() - 10
   local minimum_height = camera:getY() + -1000
 
   for x = minimum_width, maximum_width, tile_size do
@@ -143,8 +143,8 @@ function Light:drawFogOfWar()
       -- only draw fog of war if not in light radius
       local fog_in_light = false
 
-      if x + 120 <= self.right_edge and x - 10 >= self.left_edge
-        and y + 20 >= self.top_edge and y - 30 <= self.bottom_edge then
+      if x + 110 <= self.right_edge and x - 10 >= self.left_edge
+        and y + 20 >= self.top_edge and y + 60 <= self.bottom_edge then
         fog_in_light = true
       else
         fog_in_light = false
@@ -164,7 +164,7 @@ function Light:assembleShadowVertices(shadow_caster, distance_vector, distance_f
     --create a new vector by taking the edge point vector and adding the distance vector
     --divided by a specific amount
     local new_vector = given_vector + (distance_vector / 7) * distance_factor
-    
+
     --draw polygon from given_vector to new_vector
     table.insert(vertices, new_vector:getX() * scaling_factor)
     table.insert(vertices, new_vector:getY() * scaling_factor)
@@ -207,7 +207,7 @@ function Light:castShadow(shadow_caster)
 
   -- only draw the shadow if the shadow caster is in the light's range
   if not self:isInRangeOf(distance_to_shadow_caster) then return false end
-  self:drawShadow(shadow_caster, distance_vector, distance_factor, scaling_factor) 
+  self:drawShadow(shadow_caster, distance_vector, distance_factor, scaling_factor)
 end
 
 -- Inherit from Base class

@@ -17,6 +17,20 @@ function game:init()
 
   sfx:setLooping("background", true)
   sfx:play("background")
+
+  physics_world = love.physics.newWorld(0, 9.81*64, true)
+  love.physics.setMeter(64)
+
+  body1 = love.physics.newBody(physics_world, 50, -350, "static")
+  body2 = love.physics.newBody(physics_world, 50, -250, "dynamic")
+
+  shape1 = love.physics.newCircleShape(50, 50, 50)
+  shape2 = love.physics.newRectangleShape(50, 50)
+
+  fixture1 = love.physics.newFixture(body1, shape1)
+  fixture2 = love.physics.newFixture(body2, shape2)
+
+  distance_joint = love.physics.newDistanceJoint(body1, body2, 50, -350, 50, -250)
 end
 
 function game:enter(previous)
@@ -47,6 +61,15 @@ end
 
 function game:update(dt)
   if world then
+    physics_world:update(dt)
+
+    if body2 then
+      player.x = body2:getX()
+      player.y = body2:getY()
+    end
+
+    self:handleInput()
+
     Timer.update(dt)
 
     -- world holds all players, players are accessed via player and second_player
@@ -82,10 +105,31 @@ function game:draw()
     camera:drawLayers()
     world:draw()
     effects:draw()
+    r, g, b = love.graphics.getColor()
+    love.graphics.setColor(72, 160, 14)
+    love.graphics.circle("fill", body1:getX(), body1:getY(), 20)
+    love.graphics.setColor(r, g, b)
     player.light:draw()
     hud:drawRelativeMessages()
     camera:unset()
     hud:draw()
+  end
+end
+
+function game:handleInput()
+  if love.keyboard.isDown("right") then
+    if body2 then
+      body2:applyForce(120, 0, 120, 0)
+    end
+  elseif love.keyboard.isDown("left") then
+    if body2 then
+      body2:applyForce(-120, 0, -120, 0)
+    end
+  elseif love.keyboard.isDown("j") then
+    if distance_joint then
+      distance_joint:destroy()
+      distance_joint = nil
+    end
   end
 end
 
