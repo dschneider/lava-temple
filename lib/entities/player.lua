@@ -32,24 +32,32 @@ function Player:new(world, x, y, name, color, origin, object)
   object.height        = 32 * object.scaling
   object.width         = 27 * object.scaling
   object.light         = Light:new(object.x, object.y, 320, 255)
+  object.body          = love.physics.newBody(physics_world, object.x, object.y, "dynamic")
+  object.shape         = love.physics.newRectangleShape(50, 50)
+  object.fixture       = love.physics.newFixture(object.body, object.shape)
+  object.body_active   = false
 
   object:updateEdges()
 
   object.images = {}
-  object.images.front               = love.graphics.newImage("media/images/player_front.png")
-  object.images.jump                = love.graphics.newImage("media/images/player_stand_right.png")
-  object.images.stand_left          = love.graphics.newImage("media/images/player_stand_left.png")
-  object.images.stand_right         = love.graphics.newImage("media/images/player_stand_right.png")
-  object.images.run_right_animation = love.graphics.newImage("media/images/player_run_right_anim.png")
-  object.images.run_left_animation  = love.graphics.newImage("media/images/player_run_left_anim.png")
+  object.images.front               = love.graphics.newImage("media/images/player/front.png")
+  object.images.jump                = love.graphics.newImage("media/images/player/stand_right.png")
+  object.images.stand_left          = love.graphics.newImage("media/images/player/stand_left.png")
+  object.images.stand_right         = love.graphics.newImage("media/images/player/stand_right.png")
+  object.images.run_right_animation = love.graphics.newImage("media/images/player/run_right_animation.png")
+  object.images.run_left_animation  = love.graphics.newImage("media/images/player/run_left_animation.png")
 
   object.animations = {}
   object.animations.run_right = newAnimation(object.images.run_right_animation, 27, 32, 0.1, 0)
+  object.animations.run_left  = newAnimation(object.images.run_left_animation, 27, 32, 0.1, 0)
   object.animations.run_right.setMode("loop")
-  object.animations.run_left = newAnimation(object.images.run_left_animation, 27, 32, 0.1, 0)
   object.animations.run_left.setMode("loop")
 
   return object
+end
+
+function Player:isBodyActive()
+  return self.body_active
 end
 
 function Player:drawName()
@@ -106,17 +114,32 @@ end
 
 function Player:handleInput()
   if love.keyboard.isDown(" ") and not self:isJumping() then
-    -- make the player jump
-    self:jump()
-  elseif love.keyboard.isDown("right") then
-    self.x_velocity = 200
-    self.state = "run_right"
-  elseif love.keyboard.isDown("left") then
-    self.x_velocity = -200
-    self.state = "run_left"
+    if self:isBodyActive() then
+      if distance_joint then
+        distance_joint:destroy()
+        distance_joint = nil
+      end
+    else
+      -- Make the player jump.
+      self:jump()
+    end
+  elseif love.keyboard.isDown("d") then
+    if self:isBodyActive() then
+      self.body:applyForce(120, 0, 120, 0)
+    else
+      self.x_velocity = 200
+      self.state      = "run_right"
+    end
+  elseif love.keyboard.isDown("a") then
+    if self:isBodyActive() then
+      body2:applyForce(-120, 0, -120, 0)
+    else
+      self.x_velocity = -200
+      self.state      = "run_left"
+    end
   elseif not self:isJumping() then
     self.x_velocity = 0
-    self.state = "front"
+    self.state      = "front"
   end
 end
 

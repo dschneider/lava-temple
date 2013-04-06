@@ -30,18 +30,15 @@ function Hud:drawLives()
     counter = counter + 10
   end
 
-  for key, life in ipairs(lives) do
-    life:draw()
-  end
+  for key, life in ipairs(lives) do life:draw() end
 end
 
+-- Draws text messages relative to the screen resolution.
 function Hud:drawRelativeMessages()
   self:drawDanger()
   self:drawServerMessages()
 
-  if Settings.draw_fps then
-    self:drawFPS()
-  end
+  if Settings.draw_fps then self:drawFPS() end
 end
 
 function Hud:drawFPS()
