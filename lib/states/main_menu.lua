@@ -15,7 +15,7 @@ function main_menu:init()
 end
 
 function main_menu:enter(previous)
-
+  love.mouse.setVisible(true)
 end
 
 function main_menu:update(dt)

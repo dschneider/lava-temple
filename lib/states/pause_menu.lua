@@ -8,7 +8,7 @@ function pause_menu:init()
 end
 
 function pause_menu:enter(previous)
-
+  love.mouse.setVisible(true)
 end
 
 function pause_menu:update(dt)

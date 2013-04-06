@@ -15,6 +15,9 @@ function game:init()
   paused       = false
   game_started = true
 
+  mouse = love.graphics.newImage("media/images/hud/mouse.png")
+  love.mouse.setVisible(false)
+
   sfx:setLooping("lava", true)
   sfx:play("lava")
 
@@ -28,6 +31,7 @@ end
 
 function game:enter(previous)
   if previous == main_menu then world = World:new("one") end
+  love.mouse.setVisible(false)
 end
 
 function game:shakeScreen(dt)
@@ -101,6 +105,14 @@ function game:draw()
     hud:drawRelativeMessages()
     camera:unset()
     hud:draw()
+    self:drawMouseCursor()
+  end
+end
+
+function game:drawMouseCursor()
+  if not love.mouse.isVisible() then
+    local x, y = love.mouse.getPosition()
+    love.graphics.draw(mouse, x, y)
   end
 end
 
