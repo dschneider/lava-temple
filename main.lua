@@ -26,6 +26,7 @@ require("lib.core.liquid_shader")
 gui = require("lib.vendor.quickie")
 
 --entities like players, items, enemies ...
+require("lib.entities.mounting")
 require("lib.entities.whip")
 require("lib.entities.inventory")
 require("lib.entities.player")

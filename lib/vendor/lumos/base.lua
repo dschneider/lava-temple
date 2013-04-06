@@ -40,6 +40,7 @@ function Base:new(object)
   object = object or {}   -- create object if user does not provide one
   setmetatable(object, self)
   self.__index = self -- self refers to Base here
+
   return object
 end
 

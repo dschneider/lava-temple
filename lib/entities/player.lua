@@ -66,6 +66,10 @@ function Player:isBodyActive()
   return self.body_active
 end
 
+function Player:setBodyState(state)
+  self.body_active = state
+end
+
 function Player:drawName()
   love.graphics.setFont(name_font)
   local r, g, b, a = love.graphics.getColor()

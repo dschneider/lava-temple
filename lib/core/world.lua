@@ -11,6 +11,7 @@ function World:new(level_number, object)
   object.rubies         = {}
   object.chests         = {}
   object.platforms      = {}
+  object.mountings      = {}
   object.players        = {}
   object:build()
 
@@ -30,6 +31,7 @@ function World:draw()
 
   self:drawRubies()
   self:drawPlatforms()
+  self:drawMountings()
   self:drawChests()
   player:draw()
 
@@ -80,6 +82,9 @@ function World:build()
         chest.y = chest.y + 50 - chest:getHeight()
         chest.x = chest.x + 40
         table.insert(self.chests, chest)
+      elseif red == 255 and green == 234 and blue == 0 and alpha == 255 then
+        local mounting = Mounting:new(self, x_location_in_world, y_location_in_world)
+        table.insert(self.mountings, mounting)
       elseif red == 0 and green == 0 and blue == 0 and alpha == 255 then
         player = Player:new(self, x_location_in_world, y_location_in_world, "default", "blue")
         -- register player in world's player table (necessary for multiplayer)
@@ -123,6 +128,10 @@ function World:drawPlatforms()
   for key, platform in ipairs(self.platforms) do platform:draw() end
 end
 
+function World:drawMountings()
+  for key, mounting in ipairs(self.mountings) do mounting:draw() end
+end
+
 function World:castShadows()
   for key, platform in ipairs(self.platforms) do player.light:castShadow(platform) end
   for key, ruby in ipairs(self.rubies) do player.light:castShadow(ruby) end
@@ -140,7 +149,7 @@ function World:calculateCollisionsWithPlayer(player)
       if not (player.y == (platform:getY() - player:getHeight())) then
         player.y = platform:getY() - player:getHeight()
         player:resetVelocity()
-        body2 = nil
+        player:setBodyState(false)
       end
     end
   end

@@ -69,8 +69,20 @@ function game:update(dt)
     Timer.update(dt)
 
     if love.mouse.isDown("l") then
-      if player:activeItem():getName() == "whip" then
+      local selected_mounting = nil
+
+      if player:activeItem():getName() == "whip" and not joint then
         -- TODO: Use selected weapon/item at this point.
+        for key, mounting in ipairs(world.mountings) do
+          if mounting:intersectsWithMouse() then
+            selected_mounting = mounting
+          end
+        end
+
+        if selected_mounting then
+          joint = love.physics.newDistanceJoint(selected_mounting.body, player.body, selected_mounting:getX(), selected_mounting:getY(), player:getX(), player:getY(), false)
+          player:setBodyState(true)
+        end
       end
     end
 
