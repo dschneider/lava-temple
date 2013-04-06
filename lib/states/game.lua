@@ -68,6 +68,12 @@ function game:update(dt)
 
     Timer.update(dt)
 
+    if love.mouse.isDown("l") then
+      if player:activeItem():getName() == "whip" then
+        -- TODO: Use selected weapon/item at this point.
+      end
+    end
+
     -- World holds all players, players are accessed via player and
     -- second_player global variables right now.
     for index, player in pairs(world.players) do player:update(dt) end
@@ -122,5 +128,7 @@ function game:keypressed(key, code)
     Gamestate.switch(pause_menu)
   elseif key == "s" then
     game_started = not game_started
+  elseif key == "1" then
+    player:selectItem(1)
   end
 end

@@ -3,9 +3,9 @@ Player = {}
 function Player:new(world, x, y, name, color, origin, object)
   if not love then print "This library requires Love2D"; return false; end
 
-  object = object or {} -- create object if user does not provide one
+  object = object or {}
   setmetatable(object, self)
-  self.__index = self -- self refers to Camera here
+  self.__index = self
 
   -- TODO: create in extra font class where all fonts are saved
   name_font = love.graphics.newFont("media/fonts/PressStart2P.ttf", 14)
@@ -53,7 +53,13 @@ function Player:new(world, x, y, name, color, origin, object)
   object.animations.run_right.setMode("loop")
   object.animations.run_left.setMode("loop")
 
+  object.inventory = Inventory:new()
+
   return object
+end
+
+function Player:activeItem()
+  return self.inventory:activeItem()
 end
 
 function Player:isBodyActive()
@@ -168,6 +174,10 @@ function Player:jump()
   sfx:play("jump")
   effects.jump:setPosition(self:getCenter(), self:getBottomEdge())
   effects.jump:start()
+end
+
+function Player:selectItem(number)
+  self.inventory:selectItem(number)
 end
 
 function Player:getLives()
