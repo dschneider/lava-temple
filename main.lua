@@ -67,3 +67,7 @@ end
 function love.draw()
   Gamestate.draw()
 end
+
+function love.mousepressed(x, y, button)
+  Gamestate.mousepressed(x, y, button)
+end

@@ -109,12 +109,12 @@ function Player:updateGravity(dt)
   self.x = self.x + (self.x_velocity * dt)
 
   -- apply gravity
-  if not body2 then
+  if not self:isBodyActive() then
     self.y_velocity = self.y_velocity + (self.gravity * dt)
   end
 
   -- stop the player when he hits the ground
-  if not body2 then
+  if not self:isBodyActive() then
     if self.y >= 0 then
       self.y = 0
       self:resetVelocity()
@@ -125,9 +125,9 @@ end
 function Player:handleInput()
   if love.keyboard.isDown(" ") and not self:isJumping() then
     if self:isBodyActive() then
-      if distance_joint then
-        distance_joint:destroy()
-        distance_joint = nil
+      if joint then
+        joint:destroy()
+        joint = nil
       end
     else
       -- Make the player jump.
@@ -142,7 +142,7 @@ function Player:handleInput()
     end
   elseif love.keyboard.isDown("a") then
     if self:isBodyActive() then
-      body2:applyForce(-120, 0, -120, 0)
+      self.body:applyForce(-120, 0, -120, 0)
     else
       self.x_velocity = -200
       self.state      = "run_left"

@@ -28,6 +28,10 @@ function main_menu:update(dt)
     Gamestate.switch(game)
   end
 
+  if gui.Button{text = "Graphics"} then
+    Gamestate.switch(graphics_menu)
+  end
+
   if gui.Button{text = "Join Multiplayer Game"} then
     client = Client:new(host_input.text, id_input.text)
     Gamestate.switch(game)

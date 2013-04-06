@@ -32,6 +32,7 @@ end
 function game:enter(previous)
   if previous == main_menu then world = World:new("one") end
   love.mouse.setVisible(false)
+  joint = nil
 end
 
 function game:shakeScreen(dt)
@@ -67,24 +68,6 @@ function game:update(dt)
     end
 
     Timer.update(dt)
-
-    if love.mouse.isDown("l") then
-      local selected_mounting = nil
-
-      if player:activeItem():getName() == "whip" and not joint then
-        -- TODO: Use selected weapon/item at this point.
-        for key, mounting in ipairs(world.mountings) do
-          if mounting:intersectsWithMouse() then
-            selected_mounting = mounting
-          end
-        end
-
-        if selected_mounting then
-          joint = love.physics.newDistanceJoint(selected_mounting.body, player.body, selected_mounting:getX(), selected_mounting:getY(), player:getX(), player:getY(), false)
-          player:setBodyState(true)
-        end
-      end
-    end
 
     -- World holds all players, players are accessed via player and
     -- second_player global variables right now.
@@ -124,6 +107,29 @@ function game:draw()
     camera:unset()
     hud:draw()
     self:drawMouseCursor()
+  end
+end
+
+function game:mousepressed(x, y, button)
+  if button == "l" then
+    local selected_mounting = nil
+
+    if player:activeItem():getName() == "whip" and not joint then
+      ---- TODO: Use selected weapon/item at this point.
+      --for key, mounting in ipairs(world.mountings) do
+      --  if mounting:intersectsWithMouse() then
+      --    selected_mounting = mounting
+      --  end
+      --end
+
+      selected_mounting = world.mountings[1]
+
+      if selected_mounting then
+        joint = love.physics.newDistanceJoint(selected_mounting.body, player.body, selected_mounting:getX(), selected_mounting:getY(), player:getX(), player:getY(), true)
+        player:setBodyState(true)
+        player.jumping = false
+      end
+    end
   end
 end
 
