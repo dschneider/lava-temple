@@ -1,22 +1,16 @@
-Ruby = {}
+Ruby = Class:extend()
+Ruby:extend(Ruby, Base)
+--Ruby:extend(Ruby, ShadowCastable)
 
-function Ruby:new(world, x, y, object)
-  if not love then print "This library requires Love2D"; return false; end
-
-  object = object or {} -- create object if user does not provide one
-  setmetatable(object, self)
-  self.__index = self -- self refers to Camera here
-
-  object.x           = x
-  object.y           = y
-  object.scaling     = 1.5
-  object.image       = love.graphics.newImage("media/images/entities/ruby.png")
-  object.width       = object.image:getWidth() * object.scaling
-  object.height      = object.image:getHeight() * object.scaling
-  object.top_edge    = object:getY()
-  object.bottom_edge = object:getY() + 10
-
-  return object
+function Ruby:init(world, x, y, object)
+  self.x           = x
+  self.y           = y
+  self.scaling     = 1.5
+  self.image       = love.graphics.newImage("media/images/entities/ruby.png")
+  self.width       = self.image:getWidth() * self.scaling
+  self.height      = self.image:getHeight() * self.scaling
+  self.top_edge    = self:getY()
+  self.bottom_edge = self:getY() + 10
 end
 
 function Ruby:moveTo(object)
@@ -39,6 +33,3 @@ function Ruby:intersects(player)
     (self:getY() <= (player:getY() + 10) and
     self:getY() >= (player:getY() - 10))
 end
-
-inherit(Ruby, Base)
-inherit(Ruby, ShadowCastable)

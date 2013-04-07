@@ -1,14 +1,12 @@
 Player = {}
 
 function Player:new(world, x, y, name, color, origin, object)
-  if not love then print "This library requires Love2D"; return false; end
-
-  object = object or {}
-  setmetatable(object, self)
-  self.__index = self
-
   -- TODO: create in extra font class where all fonts are saved
   name_font = love.graphics.newFont("media/fonts/PressStart2P.ttf", 14)
+
+  object = object or {} -- create object if user does not provide one
+  setmetatable(object, self)
+  self.__index = self -- self refers to Camera here
 
   object.name  = name or "default"
   object.color = color or "blue"

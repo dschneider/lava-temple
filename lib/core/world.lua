@@ -87,7 +87,7 @@ function World:build()
         table.insert(self.mountings, mounting)
       elseif red == 0 and green == 0 and blue == 0 and alpha == 255 then
         player = Player:new(self, x_location_in_world, y_location_in_world, "default", "blue")
-        -- register player in world's player table (necessary for multiplayer)
+        -- Register player in world's player table (necessary for multiplayer).
         self:registerPlayer(player)
       end
 

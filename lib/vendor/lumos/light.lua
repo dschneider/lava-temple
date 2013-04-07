@@ -66,10 +66,10 @@ function Light:new(x, y, range, luminosity, object)
   object.color = color or { 255, 255, 255 }
 
   -- Light mask, light image and height and width taken from the image
-  object.image = love.graphics.newImage(CURRENT_FOLDER .. "images/light.png")
-  object.mask = love.graphics.newImage(CURRENT_FOLDER .. "images/light_mask.png")
+  object.image  = love.graphics.newImage(CURRENT_FOLDER .. "images/light.png")
+  object.mask   = love.graphics.newImage(CURRENT_FOLDER .. "images/light_mask.png")
   object.height = object.image:getHeight()
-  object.width = object.image:getWidth()
+  object.width  = object.image:getWidth()
 
   object:updateEdges()
 
@@ -77,10 +77,10 @@ function Light:new(x, y, range, luminosity, object)
 end
 
 function Light:updateEdges()
-  self.top_edge = self.y - self.height / 2
+  self.top_edge    = self.y - self.height / 2
   self.bottom_edge = self.y + self.height / 2
-  self.right_edge = self.x + self.width / 2
-  self.left_edge = self.x - self.width / 2
+  self.right_edge  = self.x + self.width / 2
+  self.left_edge   = self.x - self.width / 2
 end
 
 function Light:setX(x)

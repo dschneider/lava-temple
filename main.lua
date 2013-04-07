@@ -13,6 +13,9 @@ require("lib.core.client")
 --2d lighting engine
 require("lib.vendor.lumos")
 
+--object orientation
+require("lib.vendor.ilove.class")
+
 --core libraries needed for the game to run
 require("lib.core.settings")
 require("lib.core.camera")
